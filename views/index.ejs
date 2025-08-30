@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-</head>
-<body>
-    <form action="/log-in" method="post" onsubmit="event.preventDefault()">
-        <label for="username">Enter your username: </label>
-        <input type="text" name="name" id="username">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Uploader</title>
+  </head>
+  <body>
+    <form action="/sign-up" method="post">
+      <h1><%= message %></h1>
+      <!-- username field -->
+      <label for="username">Enter a username: </label>
+      <input type="text" name="username" id="username">
 
-        <label for="password">Enter your password: </label>
-        <input type="password" name="password" id="password">
+      <!-- password field -->
+       <label for="password">Enter a password: </label>
+       <input type="password" name="password" id="password">
+       <button type="submit">submit</button>
     </form>
-</body>
+  </body>
 </html>

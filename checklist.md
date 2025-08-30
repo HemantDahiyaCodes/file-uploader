@@ -4,7 +4,7 @@
 
 [x] Write models for the user and the session.
 
-[ ] Set up `Prisma-session-store` Library in Prisma.
+[ ] Set up session based authentication using `Prisma-session-store` Library in Prisma.
 
 [ ] Create views to allow users to sign up and log in and protect the routes with `passport.js`
 

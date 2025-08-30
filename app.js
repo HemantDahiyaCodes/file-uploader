@@ -1,41 +1,43 @@
-const express = require("express");
+// Getting the path
 const path = require("node:path");
-const expressSession = require("express-session");
-const prismaSessionStore = require("@quixo3/prisma-session-store");
-const { PrismaClient } = require("@prisma/client");
-const passport = require("./passport/passportAuthentication");
-// Routes
-const indexRoute = require("./routes/indexRoute")
+const express = require("express");
+const session = require("express-session");
+const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
+const { PrismaClient } = require("./generated/prisma");
+const dotenv = require("dotenv").config;
 
-// Instantiating the express app
+// Routes locations
+const signUp = require("./routes/index");
 const app = express();
-const PORT = 8000;
 
-// Setting views folder and views
-app.set("views", path.join(__dirname, "views"));
+// Setting ejs as views and serving static files
+app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
-app.use(express.urlencoded({extended: true}));
-app.use(passport.passport.authenticate("session"));
+app.set("views", path.join(__dirname, "views"));
+app.use(express.urlencoded({extended: true}))
 
-// Setting up express session and prisma-session-store
+// Creating the session
 app.use(
-  expressSession({
+  session({
     cookie: {
       maxAge: 7 * 24 * 60 * 60 * 1000, //ms
     },
-    secret: "santa at nasa",
+    secret: "a santa at nasa",
     resave: true,
     saveUninitialized: true,
-    store: new prismaSessionStore(new PrismaClient(), {
+    store: new PrismaSessionStore(new PrismaClient(), {
       checkPeriod: 2 * 60 * 1000,
-      dbRecordIsSessionId: true,
-      dbRecordFunction: undefined,
+      dbRecordIdFunction: true,
+      dbRecordIdFunction: undefined,
     }),
   })
 );
 
-app.use("/", indexRoute)
 
-app.listen(PORT, () => {
-  console.log("Server started at: ", PORT);
+// Routes
+app.use("/", signUp);
+
+// Server
+app.listen(process.env.PORT || 8000, () => {
+    console.log("Started server at port: ", process.env.PORT);
 });
