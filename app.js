@@ -8,6 +8,10 @@ const dotenv = require("dotenv").config;
 
 // Routes locations
 const signUp = require("./routes/index");
+const loginRoute = require("./routes/login");
+const homeRoute = require("./routes/home");
+
+// Instantiate the express
 const app = express();
 
 // Setting ejs as views and serving static files
@@ -36,6 +40,8 @@ app.use(
 
 // Routes
 app.use("/", signUp);
+app.use("/log-in", loginRoute)
+app.use("/home", homeRoute);
 
 // Server
 app.listen(process.env.PORT || 8000, () => {

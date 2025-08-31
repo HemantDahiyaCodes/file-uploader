@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 async function main() {
   await prisma.user.delete({
     where: {
-      name: "hemant",
+      name: "test_userr",
     },
   });
 

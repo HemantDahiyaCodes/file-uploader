@@ -24,5 +24,17 @@ passport.use(
   })
 );
 
-module.exports = passport.authenticate;
+passport.serializeUser(function (user, cb) {
+  process.nextTick(function () {
+    cb(null, { id: user.id, username: user.username });
+  });
+});
+
+passport.deserializeUser(function (user, cb) {
+  process.nextTick(function () {
+    return cb(null, user);
+  });
+});
+
+module.exports = passport;
 console.log(passport.authenticate());
