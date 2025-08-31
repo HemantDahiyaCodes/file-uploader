@@ -1,7 +1,10 @@
 const express = require("express");
-const homeRoute = express();
-const homeController = require("../controllers/homeController").default;
+const homeRoute = express.Router();
 
-homeRoute.get("/", homeController.homepage);
+homeRoute.get("/", (req, res) => {
+    const user = req.user;
+    console.log("The username at home.js is: ", user);
+    res.render("home", {user: user});
+});
 
 module.exports = homeRoute;

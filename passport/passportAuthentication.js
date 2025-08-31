@@ -1,11 +1,11 @@
 const passport = require("passport");
-const localStrategy = require("passport-local");
+const localStrategy = require("passport-local").Strategy;
 const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
 passport.use(
   new localStrategy(async function verify(username, password, done) {
-    const user = prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         name: username,
         password: password,
@@ -21,6 +21,8 @@ passport.use(
         message: "Username or password is incorrect",
       });
     }
+
+    return done(null, user);
   })
 );
 
@@ -37,4 +39,3 @@ passport.deserializeUser(function (user, cb) {
 });
 
 module.exports = passport;
-console.log(passport.authenticate());

@@ -1,10 +1,11 @@
-// Getting the path
+// Importing required dependencies
 const path = require("node:path");
 const express = require("express");
 const session = require("express-session");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("./generated/prisma");
 const dotenv = require("dotenv").config;
+const passport = require("./passport/passportAuthentication");
 
 // Routes locations
 const signUp = require("./routes/index");
@@ -18,8 +19,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.use(express.urlencoded({extended: true}))
-
+app.use(express.urlencoded({ extended: true }));
 // Creating the session
 app.use(
   session({
@@ -37,13 +37,14 @@ app.use(
   })
 );
 
+app.use(passport.session());
 
 // Routes
 app.use("/", signUp);
-app.use("/log-in", loginRoute)
+app.use("/log-in", loginRoute);
 app.use("/home", homeRoute);
 
 // Server
 app.listen(process.env.PORT || 8000, () => {
-    console.log("Started server at port: ", process.env.PORT);
+  console.log("Started server at port: ", process.env.PORT);
 });
