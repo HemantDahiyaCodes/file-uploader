@@ -4,7 +4,7 @@ const express = require("express");
 const session = require("express-session");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("./generated/prisma");
-const dotenv = require("dotenv").config;
+const dotenv = require("dotenv").config();
 const passport = require("./passport/passportAuthentication");
 
 // Routes locations
@@ -31,17 +31,18 @@ app.use(
     saveUninitialized: true,
     store: new PrismaSessionStore(new PrismaClient(), {
       checkPeriod: 2 * 60 * 1000,
-      dbRecordIdFunction: true,
+      dbRecordIdIsSessionId: true,
       dbRecordIdFunction: undefined,
     }),
   })
 );
 
+app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
 app.use("/", signUp);
-app.use("/log-in", loginRoute);
+app.use("/login", loginRoute);
 app.use("/home", homeRoute);
 
 // Server
