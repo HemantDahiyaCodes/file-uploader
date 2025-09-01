@@ -23,7 +23,7 @@ model User {
 
 model File {
   id       Int    @id @default(autoincrement())
-  filename String @unique
+  filename String
   size     String @db.VarChar(255)
   type     String
   Author   User   @relation(fields: [authorId], references: [id])

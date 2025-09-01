@@ -7,6 +7,10 @@
 </head>
 <body>
     <h1>Hello, <%= user.name %></h1>
-     <h1>Homepage</h1>
+    <form action="/upload" enctype="multipart/form-data" method="post">
+        <label for="fileUpload">Select a file to upload.</label>
+        <input type="file" name="fileUpload" id="fileUpload">
+        <button type="submit">submit</button>
+    </form>
 </body>
 </html>

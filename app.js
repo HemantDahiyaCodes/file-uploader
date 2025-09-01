@@ -44,7 +44,7 @@ app.use(passport.session());
 app.use("/", signUp);
 app.use("/login", loginRoute);
 app.use("/home", homeRoute);
-
+app.use("/upload", homeRoute)
 // Server
 app.listen(process.env.PORT || 8000, () => {
   console.log("Started server at port: ", process.env.PORT);
