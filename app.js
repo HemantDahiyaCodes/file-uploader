@@ -11,6 +11,9 @@ const passport = require("./passport/passportAuthentication");
 const signUp = require("./routes/index");
 const loginRoute = require("./routes/login");
 const homeRoute = require("./routes/home");
+const uploadRoute = require("./routes/upload");
+const folderRoute = require("./routes/createFolder");
+const logoutRoute = require("./routes/logout");
 
 // Instantiate the express
 const app = express();
@@ -43,8 +46,17 @@ app.use(passport.session());
 // Routes
 app.use("/", signUp);
 app.use("/login", loginRoute);
-app.use("/home", homeRoute);
-app.use("/upload", homeRoute)
+app.use(
+  "/home",
+  (req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+  },
+  homeRoute
+);
+app.use("/upload", uploadRoute);
+app.use("/createFolder", folderRoute);
+app.use("/log-out", logoutRoute);
 // Server
 app.listen(process.env.PORT || 8000, () => {
   console.log("Started server at port: ", process.env.PORT);

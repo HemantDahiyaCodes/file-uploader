@@ -15,10 +15,11 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  name     String @unique
-  password String @db.VarChar(255)
+  id       Int      @id @default(autoincrement())
+  name     String   @unique
+  password String   @db.VarChar(255)
   File     File[]
+  folders   Folder[]
 }
 
 model File {
@@ -28,6 +29,16 @@ model File {
   type     String
   Author   User   @relation(fields: [authorId], references: [id])
   authorId Int
+  folder   Folder @relation(fields: [folderId], references: [id])
+  folderId Int
+}
+
+model Folder {
+  id         Int    @id @default(autoincrement())
+  folderName String
+  Author     User   @relation(fields: [authorId], references: [id])
+  authorId   Int
+  files      File[]
 }
 
 // Prisma session store

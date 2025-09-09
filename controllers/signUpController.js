@@ -3,15 +3,14 @@ const prisma = new PrismaClient();
 const bcrypt = require("bcryptjs");
 
 async function signUpForm(req, res) {
-  const {message} = req.query;
-  res.render("index", {message});
+  const { message } = req.query;
+  res.render("index", { message: message });
 }
 
 async function signUp(req, res) {
   const { username } = req.body;
   const { password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
-
 
   const user = await prisma.user.findUnique({ where: { name: username } });
 
@@ -21,7 +20,7 @@ async function signUp(req, res) {
     await prisma.user.create({
       data: {
         name: username,
-        password: hashedPassword
+        password: hashedPassword,
       },
     });
     console.log("user created!");
@@ -29,13 +28,7 @@ async function signUp(req, res) {
   }
 }
 
-async function loginForm(req, res) {
-  const {message} = req.query;
-  res.render("login", {message});
-}
-
 module.exports = {
-  signUpForm,
-  signUp,
-  loginForm
-};
+    signUpForm,
+    signUp
+}

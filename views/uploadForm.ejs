@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload files here</title>
+  </head>
+  <body>
+    <form action="/upload" enctype="multipart/form-data" method="post">
+      <label for="filename">
+        <input type="file" name="filename" id="filename" />
+
+        <label for="chooseFolder"
+          >Choose a folder to upload the file in:
+        </label>
+        <select name="chooseFolder" id="chooseFolder" width="300px">
+          <% for(let i = 0; i < folders.length; i++) { %>
+          <option value="<%= folders[i].id %>">
+            <% console.log("id of the folder: ", folders[i].id) %>
+            <%=folders[i].folderName%>
+          </option>
+          <% } %>
+        </select>
+        <button type="submit">upload</button>
+      </label>
+    </form>
+  </body>
+</html>

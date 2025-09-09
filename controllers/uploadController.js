@@ -20,6 +20,11 @@ async function saveFileToDb(req, res) {
   });
   console.log("The user found at uploadController was: ", user);
 
+  const folderInReq = req.body.chooseFolder;
+  console.log("Folder in req in upload controller is: ", folderInReq);
+
+  console.log("Folder's info at upload controller is: ", folderInReq);
+
   await prisma.file.create({
     data: {
       filename: req.file.fieldname,
@@ -30,12 +35,39 @@ async function saveFileToDb(req, res) {
           id: userInReq.id,
         },
       },
+      folder: {
+        connect: {
+          id: parseFloat(folderInReq),
+        }
+      }
     },
   });
+
+  res.redirect("/home");
+}
+
+async function uploadForm(req, res) {
+  const userInReq = req.user;
+  console.log(
+    "The user in uploadController in uploadForm function is: ",
+    userInReq
+  );
+
+  const user = await prisma.user.findUnique({
+    where: {
+      name: userInReq.name,
+    },
+    include: {
+      folders: true,
+    },
+  });
+
+  res.render("uploadForm", { folders: user.folders });
 }
 
 module.exports = {
   storage,
   upload,
   saveFileToDb,
+  uploadForm,
 };

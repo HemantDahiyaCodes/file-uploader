@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
-</head>
-<body>
-    <h1>Hello, <%= user.name %></h1>
-    <form action="/upload" enctype="multipart/form-data" method="post">
-        <label for="fileUpload">Select a file to upload.</label>
-        <input type="file" name="fileUpload" id="fileUpload">
-        <button type="submit">submit</button>
-    </form>
-</body>
+  </head>
+  <body>
+    <a href="/upload">Upload</a>
+    <a href="/createFolder">create folder</a>
+
+    <form action="/log-out"><button type="submit">log out</button></form>
+
+    <% if(folders.length === 0) { %>
+    <h1>The user has no folders</h1>
+    <% } else { %> 
+      <% for(let i = 0; i < folders.length; i++) {  %>
+        <a href="/home/<%= folders[i].folderName%>"><%=folders[i].folderName%></a>
+      <% }%>
+      <% } %>
+  </body>
 </html>
