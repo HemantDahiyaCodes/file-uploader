@@ -1,0 +1,97 @@
+Awesome, congrats on completing the Prisma ORM lesson! It's a powerful tool for working with databases in Node.js applications. Here are some small exercises to help you practice and solidify your understanding:
+
+### 1. **Basic CRUD Operations**
+
+* **Create a new user**: Write a script that creates a new user in the database. The user should have a name, email, and age.
+* **Read users**: Write a query that fetches all users from the database.
+* **Update a user**: Write a script that updates a user's email based on their `id`.
+* **Delete a user**: Write a script that deletes a user based on their `id`.
+
+**Challenge**: Add validation to make sure the user’s email is unique before creating or updating a user.
+
+---
+
+### 2. **Relations Between Models**
+
+* **Create models**: In your Prisma schema, create two models: `Author` and `Book`. An `Author` can have many `Books`, and a `Book` belongs to an `Author`.
+
+  * `Author`: id, name, bio
+  * `Book`: id, title, genre, authorId (Foreign Key)
+
+* **Create an author and a book**: Write a script that creates an author and a book linked to that author.
+
+* **Fetch books by author**: Write a query to fetch all books by a specific author.
+
+* **Delete a book**: Write a query to delete a book from the database.
+
+---
+
+### 3. **Many-to-Many Relationship**
+
+* **Create models**: In your Prisma schema, create models for `User` and `Course`, and set up a many-to-many relationship between them.
+
+  * `User`: id, name, email
+  * `Course`: id, title, description
+  * **Junction Table**: `UserCourses` with fields `userId` and `courseId`.
+
+* **Enroll a user in a course**: Write a script to enroll a user in multiple courses.
+
+* **List courses a user is enrolled in**: Write a query to fetch all courses that a user is enrolled in.
+
+* **Unenroll a user**: Write a query to unenroll a user from a course.
+
+---
+
+### 4. **Aggregation**
+
+* **Count Users**: Write a query that counts the number of users in the database.
+* **Average age**: Write a query that calculates the average age of all users.
+* **Most popular course**: Write a query to find which course has the most enrolled users.
+
+---
+
+### 5. **Advanced Filters & Pagination**
+
+* **Search for users**: Write a query that searches users by name or email, using a partial match.
+* **Pagination**: Implement pagination to display a list of users, showing only 5 users per page. Make sure to include "next" and "previous" page links.
+
+---
+
+### 6. **Database Seed Script**
+
+* Write a database seed script that populates your database with some initial data (e.g., a few users, authors, books, courses, etc.).
+* Ensure that the data is related, for example:
+
+  * A user who is enrolled in courses.
+  * Authors who have written books.
+
+---
+
+### 7. **Prisma Migrations**
+
+* **Modify schema**: Change your schema (e.g., add a new field to an existing model).
+* **Generate a migration**: Use Prisma Migrate to generate and apply a migration to reflect the schema change in the database.
+
+---
+
+### 8. **Transaction Handling**
+
+* **Atomic Operations**: Write a script that performs multiple operations in a transaction (e.g., creating a user and assigning them multiple books, and if any step fails, it should roll back all operations).
+
+---
+
+### 9. **Error Handling**
+
+* **Custom Error Handling**: Write a script that catches and handles errors when creating a user, for example, when trying to create a user with an already existing email.
+
+---
+
+### 10. **Testing**
+
+* **Unit Test Prisma Queries**: Write a simple unit test to check that your CRUD operations are working correctly. You can use a testing framework like Jest and mock your Prisma client.
+
+---
+
+These exercises should help you get comfortable with the different capabilities of Prisma ORM. As you complete these, feel free to challenge yourself by adding more complexity, such as creating more relationships or adding business logic to your operations.
+
+If you need any help with specific exercises, just let me know!

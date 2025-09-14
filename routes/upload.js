@@ -6,7 +6,7 @@ uploadRoute.get("/", uploadController.uploadForm);
 uploadRoute.post(
   "/",
   uploadController.upload.single("filename"),
-  uploadController.saveFileToDb
+  uploadController.saveFileToDbAndCloud
 );
 
 module.exports = uploadRoute;

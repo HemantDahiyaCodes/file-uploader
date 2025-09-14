@@ -1,33 +1,68 @@
 const multer = require("multer");
 const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
-const storage = multer.diskStorage({
-  destination: function (req, file, done) {
-    done(null, "uploaded_files");
-  },
+const dotenv = require("dotenv").config();
+const cloudinary = require("cloudinary").v2;
 
-  filename: function (req, file, done) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    done(null, file.fieldname + "-" + uniqueSuffix);
-  },
-});
+// Configuing cloud
+cloudinary.config(process.env.CLOUDINARY_URL);
+
+const storage = multer.memoryStorage();
+
 const upload = multer({ storage: storage });
 
-async function saveFileToDb(req, res) {
+// async function uploadFileToCloud(req, res) {
+//   const userInReq = req.user;
+//   const user = await prisma.user.findUnique({
+//     where: { name: userInReq.name },
+//   });
+
+//   const folderIdInReq = req.body.chooseFolder;
+//   const folder = await prisma.folder.findFirst({
+//     where: { id: parseFloat(folderIdInReq) }, // matches the id
+//   });
+
+//   res.redirect("/home");
+// }
+
+async function saveFileToDbAndCloud(req, res) {
   const userInReq = req.user;
   const user = await prisma.user.findUnique({
     where: { name: userInReq.name },
   });
-  console.log("The user found at uploadController was: ", user);
 
-  const folderInReq = req.body.chooseFolder;
-  console.log("Folder in req in upload controller is: ", folderInReq);
+  const folderIdInReq = req.body.chooseFolder;
+  const folder = await prisma.folder.findFirst({
+    where: {id: parseFloat(folderIdInReq)}
+  })
 
-  console.log("Folder's info at upload controller is: ", folderInReq);
+  // Uploading files to the cloud
+  const uploadResult = await new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: `${user.name}/${folder.folderName}` },
+      (error, uploadResult) => {
+        if (error) {
+          return reject(error);
+        }
 
+        return resolve(uploadResult);
+      }
+    );
+
+    stream.end(req.file.buffer);
+  });
+
+  console.log("🔍 Upload result (raw):", uploadResult);
+  console.log(
+    "🔍 Upload result (stringified):",
+    JSON.stringify(uploadResult, null, 2)
+  );
+  console.log("🔍 Upload result keys:", Object.keys(uploadResult));
+
+  // Saving files information in the db
   await prisma.file.create({
     data: {
-      filename: req.file.fieldname,
+      filename: req.file.originalname,
       size: `${req.file.size}`,
       type: req.file.mimetype,
       Author: {
@@ -37,9 +72,9 @@ async function saveFileToDb(req, res) {
       },
       folder: {
         connect: {
-          id: parseFloat(folderInReq),
-        }
-      }
+          id: parseFloat(folderIdInReq),
+        },
+      },
     },
   });
 
@@ -48,10 +83,6 @@ async function saveFileToDb(req, res) {
 
 async function uploadForm(req, res) {
   const userInReq = req.user;
-  console.log(
-    "The user in uploadController in uploadForm function is: ",
-    userInReq
-  );
 
   const user = await prisma.user.findUnique({
     where: {
@@ -68,6 +99,6 @@ async function uploadForm(req, res) {
 module.exports = {
   storage,
   upload,
-  saveFileToDb,
+  saveFileToDbAndCloud,
   uploadForm,
 };

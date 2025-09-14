@@ -1,0 +1,139 @@
+Hell yes, Hemant. Getting hands-on is the **only real way** to internalize Prisma. I’ll give you a **progressive ladder** of exercises — starting simple, then scaling up to real-world tasks. No bullshit.
+
+---
+
+## 🧱 Beginner – Warmup (Basics of Schema & CRUD)
+
+**Goal:** Get comfy with models, relations, and Prisma Client.
+
+### ✅ Exercise 1: Basic User model
+
+1. Set up a new Prisma project with SQLite/Postgres
+2. Create a `User` model:
+
+   ```prisma
+   model User {
+     id    Int    @id @default(autoincrement())
+     name  String
+     email String @unique
+   }
+   ```
+3. Generate the client
+4. Create a script to:
+
+   * Add a new user
+   * Fetch all users
+   * Find a user by email
+
+---
+
+### ✅ Exercise 2: Add a `Post` model with relation
+
+1. Add:
+
+   ```prisma
+   model Post {
+     id      Int    @id @default(autoincrement())
+     title   String
+     content String
+     userId  Int
+     user    User   @relation(fields: [userId], references: [id])
+   }
+   ```
+2. Write scripts to:
+
+   * Create a user with multiple posts
+   * Fetch a user along with their posts
+   * Update a post’s content
+
+---
+
+## 🧩 Intermediate – Relations & Filters
+
+### ✅ Exercise 3: Filtering and ordering
+
+* Get all posts of a user ordered by creation date
+* Find users who have written **more than 2 posts**
+
+Use `where`, `orderBy`, `include`, `select` options.
+
+---
+
+### ✅ Exercise 4: Pagination
+
+* Implement pagination for posts (limit + offset)
+* Bonus: Write a function that returns the **total post count** + **paginated results**
+
+---
+
+### ✅ Exercise 5: Many-to-many
+
+Add a `Category` model and a many-to-many relation:
+
+```prisma
+model Post {
+  id         Int        @id @default(autoincrement())
+  title      String
+  categories Category[] @relation("PostCategories")
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String
+  posts Post[] @relation("PostCategories")
+}
+```
+
+Create posts with multiple categories. Fetch posts by category.
+
+---
+
+## 🔥 Advanced – Real-World-Like Scenarios
+
+### ✅ Exercise 6: Data migration script
+
+* Add a `published` field to the `Post` model (default: false)
+* Write a migration script to set all existing posts as `published = true`
+
+---
+
+### ✅ Exercise 7: Transactional logic
+
+* Write a function to create a user and their initial post **in one transaction**
+* Simulate failure to test rollback
+
+```ts
+await prisma.$transaction([
+  prisma.user.create(...),
+  prisma.post.create(...)
+])
+```
+
+---
+
+### ✅ Exercise 8: Raw SQL
+
+* Use `$queryRaw` to get post count by user
+* Use `$executeRaw` to bulk update post titles (e.g., add “Draft:” prefix to unpublished posts)
+
+---
+
+## 🛠 Bonus (if you want to build confidence)
+
+### ✅ Project Idea: Simple Blog API
+
+* Users can register
+* Users can write/edit/delete posts
+* Each post can have tags (many-to-many)
+* Auth isn’t necessary right now — focus on **CRUD and Prisma patterns**
+
+---
+
+If you want, I’ll also:
+
+* Create a repo template for you
+* Or generate code snippets for each one
+
+Just say the word.
+
+Want these in a Notion doc or markdown format too?

@@ -20,6 +20,7 @@ const app = express();
 
 // Setting ejs as views and serving static files
 app.use(express.static(path.join(__dirname, "public")));
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));

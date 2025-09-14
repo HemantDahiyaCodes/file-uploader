@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 async function homepage(req, res) {
   const currentUser = req.user;
-  console.log("Current user in req is: ", currentUser);
+  console.log("Current user in req is (home route): ", currentUser);
 
   const user = await prisma.user.findUnique({
     where: {
@@ -14,9 +14,8 @@ async function homepage(req, res) {
       folders: true,
     },
   });
-  console.log(user);
 
-  console.log("Folders of the user: ", user.folders);
+  console.log("Folders of the user (home route): ", user.folders);
   res.render("home", { user: user, folders: user.folders });
 }
 
@@ -47,9 +46,7 @@ async function viewFolderContent(req, res) {
       files: true,
     }
   })
-
-  console.log("The folder's id is: ", folder.id);
-  console.log("The folder is: ", folder);
+  
   res.render("viewFolderContent", {files: folder.files})
 }
 

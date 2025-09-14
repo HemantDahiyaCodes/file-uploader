@@ -28,3 +28,13 @@ Database Structure:
 6. `/home/:foldername` route and `viewFolderController`:
 - Link each `<a>` tag to the take the user to `/home` path and `:foldername` folder.
 - Extract the route parameters from `<a>` and store them, later use that to find the folder and showing all the files.
+
+
+#  Uploading  files in the cloud using supabase
+- Install ` @supabase/supabase-js` library.
+- Head over to the project settings and get the API_KEY and the URL.
+- import the package ` @supabase/supabase-js` into uploadController and configure the client by providing project url and key to upload files.
+- Write the function to upload files in the cloud
+
+## What I need to do:
+- Get the file from multer, with changed name and everything and instead of storing it in  the disk, I need to upload it in supabase -- while storing the information about the  file in the database.

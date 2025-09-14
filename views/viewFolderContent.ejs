@@ -7,7 +7,8 @@
 </head>
 <body>
     <% for(let i = 0; i < files.length; i++) { %>
-        <h1><%=files[i].filename %></h1>
+        <h1><%=files[i].filename%></h1>
+        <a href="uploaded_files/<%=files[i].filename%>" download>download file</a>
    <% } %>
 </body>
 </html>
