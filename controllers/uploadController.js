@@ -52,12 +52,11 @@ async function saveFileToDbAndCloud(req, res) {
     stream.end(req.file.buffer);
   });
 
-  console.log("🔍 Upload result (raw):", uploadResult);
+  console.log("Upload result (raw):", uploadResult);
   console.log(
-    "🔍 Upload result (stringified):",
+    "upload result (stringified):",
     JSON.stringify(uploadResult, null, 2)
   );
-  console.log("🔍 Upload result keys:", Object.keys(uploadResult));
 
   // Saving files information in the db
   await prisma.file.create({
