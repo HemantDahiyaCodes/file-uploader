@@ -24,7 +24,7 @@ async function signUp(req, res) {
       },
     });
     console.log("user created!");
-    res.redirect("/");
+    res.redirect("/login");
   }
 }
 

@@ -22,10 +22,9 @@ async function homepage(req, res) {
 async function viewFolderContent(req, res) {
   const folderInReq = req.params;
   console.log(folderInReq);
-  const userInReq = req.user;
 
+  const userInReq = req.user;
   console.log(userInReq);
-  console.log("Folder name is: ", folderInReq.foldername);
 
   const user = await prisma.user.findUnique({
     where: {
@@ -34,20 +33,25 @@ async function viewFolderContent(req, res) {
 
     include: {
       folders: true,
-    }
+    },
   });
 
   const folder = await prisma.folder.findFirst({
     where: {
-      folderName: folderInReq.foldername
+      folderName: folderInReq.foldername,
+      authorId: user.id,
     },
 
     include: {
       files: true,
-    }
-  })
-  
-  res.render("viewFolderContent", {files: folder.files})
+    },
+  });
+
+  console.log("The url of the file is: ", folder.files)
+
+  res.render("viewFolderContent", {
+    files: folder.files,
+  });
 }
 
 module.exports = {

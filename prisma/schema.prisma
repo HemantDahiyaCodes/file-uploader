@@ -31,6 +31,7 @@ model File {
   authorId Int
   folder   Folder @relation(fields: [folderId], references: [id])
   folderId Int
+  publicURL String @default("")
 }
 
 model Folder {

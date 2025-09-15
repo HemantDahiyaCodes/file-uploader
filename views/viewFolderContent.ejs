@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>All files</title>
-</head>
-<body>
-    <% for(let i = 0; i < files.length; i++) { %>
-        <h1><%=files[i].filename%></h1>
-        <a href="uploaded_files/<%=files[i].filename%>" download>download file</a>
-   <% } %>
-</body>
+  </head>
+  <body>
+    <% if(files.length < 1) { %>
+    <h1>This folder has no files yet</h1>
+    <% } else {%> <% for(let i = 0; i < files.length; i++) { %>
+    <a
+      href="<%= files[i].publicURL %>"
+      target="_blank"
+      ><h1><%=files[i].filename %></h1></a
+    >
+    <% } %> <% } %>
+  </body>
 </html>

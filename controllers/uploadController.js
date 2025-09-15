@@ -25,7 +25,11 @@ async function saveFileToDbAndCloud(req, res) {
   // Uploading files to the cloud
   const uploadResult = await new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
-      { folder: `${user.name}/${folder.folderName}`, resource_type: "raw" },
+      {
+        folder: `${user.name}/${folder.folderName}`,
+        use_filename: true,
+        resource_type: "raw",
+      },
       (error, result) => {
         if (error) {
           console.error("Cloudinary upload error:", error);
@@ -61,6 +65,7 @@ async function saveFileToDbAndCloud(req, res) {
           id: parseFloat(folderIdInReq),
         },
       },
+      publicURL: uploadResult.url,
     },
   });
 
@@ -69,6 +74,10 @@ async function saveFileToDbAndCloud(req, res) {
 
 async function uploadForm(req, res) {
   const userInReq = req.user;
+
+  if (!userInReq) {
+    res.redirect("/?message=User&does&not&exist");
+  }
 
   const user = await prisma.user.findUnique({
     where: {
