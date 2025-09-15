@@ -22,12 +22,16 @@ async function saveFileToDbAndCloud(req, res) {
     where: { id: parseFloat(folderIdInReq) },
   });
 
+  const filename = req.file.originalname;
+  console.log("File name is: ", filename);
+
   // Uploading files to the cloud
   const uploadResult = await new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
         folder: `${user.name}/${folder.folderName}`,
         use_filename: true,
+        filename_override: req.file.originalname,
         resource_type: "raw",
       },
       (error, result) => {
